@@ -4,9 +4,8 @@ import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
 from tokens import main_token
 from googletrans import Translator
-translator = Translator()
-print(translator.translate('да пошёл ты, кожевенник!', dest='en'))
 
+translator = Translator()
 vk_session = vk_api.VkApi(token=main_token)
 session_api = vk_session.get_api()
 longpoll = VkLongPoll(vk_session)
@@ -19,12 +18,12 @@ for event in longpoll.listen():
         if event.to_me:
             msg = event.text
             id = event.user_id
-            print(event)
-            print("ИД: "+str(id)+"сообщение: "+ msg)
+            print("ИД: "+ str(id)+ " сообщение: "+ msg)
+            answer = ""
             if translator.detect(msg).lang=='ru':
                 answer = translator.translate(msg, dest='en')
                 sender(id, answer.text + '\nопределено: ' + answer.src)
             else:
                 answer = translator.translate(msg, dest='ru')
                 sender(id, answer.text+'\nопределено: '+answer.src)
-
+            print(answer.text)
